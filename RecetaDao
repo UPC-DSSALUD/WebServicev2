@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using PortalSaludWCF.Dominio;
+
+namespace PortalSaludWCF.Persistencia
+{
+    public class RecetaDao
+    {
+        private string CadenaConexion = @"Data Source=bddsalud.ckpig9bkezfh.us-east-2.rds.amazonaws.com;Initial Catalog=DSD_SALUD;User Id=admin;Password=UPC2019$;";
+
+        public List<Receta> Obtener(string pac_dni)
+        {
+
+            Receta RecetaEncontrado = null;
+            List<Receta> lstRecetaEncontrada = new List<Receta>();
+
+            // string sentencia = "Select t0.rec_cod,t0.Cit_cod, t0.Rec_fec,t0.pac_cod,"+
+            //"t2.pac_dni, (t2.Pac_app + ' ' + t2.Pac_apm + ' , ' + t2.Pac_nom) as pac_nombres,"+
+            //"t1.med_cod,t3.Med_Nom,t1.Rec_Dos,t1.Rec_Frec,t1.Rec_FECI,t1.REC_FEFI,t1.REC_DET from[dbo].[Receta_Cab] T0"+
+            //"inner join[dbo].[Receta_Detalle] T1 ON T0.Rec_Cod=T1.Rec_Cod" +
+            //"inner join[dbo].[Paciente] T2 ON t2.Pac_cod=t0.Pac_Cod" +
+            //"inner join[dbo].[Medicamento] t3 on t3.Med_Cod=t1.Med_Cod WHERE t2.pac_dni = @pac_dni";
+
+            using (SqlConnection conexion = new SqlConnection(CadenaConexion))
+            {
+                conexion.Open();
+                using (SqlCommand comando = new SqlCommand("RECETA_DETALLE_PACIENTE", conexion))
+                {
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.Parameters.Add(new SqlParameter("@pac_dni", pac_dni));
+                    using (SqlDataReader resultado = comando.ExecuteReader())
+                    {
+                        while (resultado.Read())
+                        {
+                            RecetaEncontrado = new Receta();
+                            RecetaEncontrado.rec_cod = resultado.GetInt32(resultado.GetOrdinal("rec_cod"));
+                            RecetaEncontrado.Cit_cod = resultado.GetInt32(resultado.GetOrdinal("Cit_cod"));
+                            RecetaEncontrado.Rec_fec = resultado.GetString(resultado.GetOrdinal("Rec_fec"));
+                            RecetaEncontrado.pac_cod = resultado.GetInt32(resultado.GetOrdinal("pac_cod"));
+                            RecetaEncontrado.pac_dni = resultado.GetString(resultado.GetOrdinal("pac_dni"));
+                            RecetaEncontrado.pac_nombres = resultado.GetString(resultado.GetOrdinal("pac_nombres"));
+                            RecetaEncontrado.med_cod = resultado.GetString(resultado.GetOrdinal("med_cod"));
+                            RecetaEncontrado.Med_Nom = resultado.GetString(resultado.GetOrdinal("Med_Nom"));
+                            RecetaEncontrado.Rec_Dos = resultado.GetInt32(resultado.GetOrdinal("Rec_Dos"));
+                            RecetaEncontrado.Rec_Frec = resultado.GetString(resultado.GetOrdinal("Rec_Frec"));
+                            RecetaEncontrado.Rec_FECI = resultado.GetString(resultado.GetOrdinal("Rec_FECI"));
+                            RecetaEncontrado.REC_FEFI = resultado.GetString(resultado.GetOrdinal("REC_FEFI"));
+                            RecetaEncontrado.REC_DET = resultado.GetString(resultado.GetOrdinal("REC_DET"));
+                            lstRecetaEncontrada.Add(RecetaEncontrado);
+                        }
+                          
+                        }
+                }
+
+            }
+            return lstRecetaEncontrada;
+        }
+
+
+    }
+}
