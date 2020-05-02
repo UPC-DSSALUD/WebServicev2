@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Text;
+using PortalSaludWCF.Dominio;
+namespace PortalSaludWCF
+{
+    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de interfaz "IWPaciente" en el código y en el archivo de configuración a la vez.
+    [ServiceContract]
+    public interface IWPaciente
+    {
+        [OperationContract]
+        [WebInvoke(Method = "GET", UriTemplate = "Pacientes/GetAll", ResponseFormat = WebMessageFormat.Json)]
+        List<Paciente> ObtenerPacientes();
+        [OperationContract]
+        [WebInvoke(Method = "PUT", UriTemplate = "Pacientes", ResponseFormat = WebMessageFormat.Json)]
+        Paciente ModificarPaciente(Paciente objPaciente);
+        [OperationContract]
+        [WebInvoke(Method = "GET", UriTemplate = "Pacientes/{pac_dni}", ResponseFormat = WebMessageFormat.Json)]
+        Paciente ObtenerPaciente(string pac_dni);
+    }
+}
