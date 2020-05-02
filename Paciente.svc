@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+using PortalSaludWCF.Dominio;
+using PortalSaludWCF.Persistencia;
+namespace PortalSaludWCF
+{
+    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "WPaciente" en el código, en svc y en el archivo de configuración a la vez.
+    // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WPaciente.svc o WPaciente.svc.cs en el Explorador de soluciones e inicie la depuración.
+    public class WPaciente : IWPaciente
+    {
+        private PacienteDAO PacienteDao = new PacienteDAO();
+        Paciente IWPaciente.ModificarPaciente(Paciente objPaciente)
+        {
+            return PacienteDao.Modificar(objPaciente);
+        }
+        List<Paciente> IWPaciente.ObtenerPacientes()
+        {
+            return PacienteDao.Listar();
+        }
+        public Paciente ObtenerPaciente(string pac_dni)
+        {
+            return PacienteDao.Obtener(pac_dni);
+        }
+    }
+}
