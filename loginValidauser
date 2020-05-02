@@ -1,0 +1,49 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using PortalSaludWCF.Dominio;
+//using RabbitMQ.Client;
+//using Twilio;
+//using Twilio.Rest.Api.V2010.Account;
+//using System.Text;
+//using RabbitMQ.Client.Events;
+
+namespace PortalSaludWCF.Persistencia
+{
+    public class PacienteDAO
+    {
+        private string CadenaConexion = @"Data Source=bddsalud.ckpig9bkezfh.us-east-2.rds.amazonaws.com;Initial Catalog=DSD_SALUD;User Id=admin;Password=UPC2019$;";
+        public Paciente Obtener(string pac_dni)
+        {
+
+            Paciente pacienteEncontrado = null;
+            string sentencia = "SELECT * FROM paciente where pac_dni=@pac_dni";
+            using (SqlConnection conexion = new SqlConnection(CadenaConexion))
+            {
+                conexion.Open();
+                using (SqlCommand comando = new SqlCommand(sentencia, conexion))
+                {
+                    comando.Parameters.Add(new SqlParameter("@pac_dni", pac_dni));
+                    using (SqlDataReader resultado = comando.ExecuteReader())
+                    {
+                        if (resultado.Read())
+                        {
+                            pacienteEncontrado = new Paciente()
+                            {
+
+                                pac_cel = (string)resultado["pac_cel"],
+                                pac_dir = (string)resultado["pac_dir"],
+                                pac_ema = (string)resultado["pac_ema"],
+
+                            };
+                        }
+                    }
+                }
+
+            }
+            return pacienteEncontrado;
+        }
+
