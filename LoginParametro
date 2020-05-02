@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Text;
+using PortalSaludWCF.Dominio;
+
+namespace PortalSaludWCF
+{
+    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de interfaz "IWParametros" en el código y en el archivo de configuración a la vez.
+    
+    [ServiceContract]
+    public interface IWParametros
+    {
+        [OperationContract]
+        [WebInvoke(Method = "GET", UriTemplate = "Parametros/GetAll", ResponseFormat = WebMessageFormat.Json)]
+        List<Parametros> ObtenerParametros();
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "Parametros", ResponseFormat = WebMessageFormat.Json)]
+        Parametros ModificarParametros(Parametros objParametros);
+        [OperationContract]
+        [WebInvoke(Method = "GET", UriTemplate = "Parametros/{pac_dni}", ResponseFormat = WebMessageFormat.Json)]
+        Parametros ObtenerParametro(string pac_dni);
+    }
+}
