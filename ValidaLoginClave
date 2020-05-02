@@ -1,0 +1,37 @@
+      public Paciente ObtenerPacienteClave(string pac_dni)
+        {
+
+            Paciente pacienteEncontrado = null;
+            string sentencia = "SELECT * FROM paciente where pac_dni=@pac_dni";
+            using (SqlConnection conexion = new SqlConnection(CadenaConexion))
+            {
+                conexion.Open();
+                using (SqlCommand comando = new SqlCommand(sentencia, conexion))
+                {
+                    comando.Parameters.Add(new SqlParameter("@pac_dni", pac_dni));
+                    using (SqlDataReader resultado = comando.ExecuteReader())
+                    {
+                        if (resultado.Read())
+                        {
+                            pacienteEncontrado = new Paciente()
+                            {
+
+                                pac_cod = (int)resultado["pac_cod"],
+                                pac_nombres = (string)resultado["Pac_Nom"],
+                                pac_app = (string)resultado["pac_app"],
+                                pac_apm = (string)resultado["pac_apm"],
+                                pac_dni = (string)resultado["pac_dni"],
+                                pac_clave = (string)resultado["pac_clave"],
+                                pac_cel = (string)resultado["pac_cel"],
+                                pac_dir = (string)resultado["pac_dir"],
+                                pac_ema = (string)resultado["pac_ema"],
+
+                            };
+                        }
+                    }
+                }
+
+            }
+            return pacienteEncontrado;
+        }
+  
