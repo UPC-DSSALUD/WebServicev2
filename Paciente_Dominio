@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Web;
+
+namespace PortalSaludWCF.Dominio
+{
+    [DataContract]
+    public class Receta
+    {
+
+        [DataMember]
+        public int rec_cod { get; set; }
+
+        [DataMember]
+        public int Cit_cod { get; set; }
+
+        [DataMember]
+        public string Rec_fec { get; set; }
+        public int Rec_Dos { get; set; }
+        [DataMember]
+        public string Rec_Frec { get; set; }
+        [DataMember]
+        public string Rec_FECI { get; set; }
+        [DataMember]
+        public string REC_FEFI { get; set; }
+        [DataMember]
+        public string REC_DET { get; set; }
+
+        [DataMember]
+        public string med_cod { get; set; }
+
+        [DataMember]
+
+        public int pac_cod { get;  set; }
+        [DataMember]
+        public string pac_dni { get;  set; }
+        [DataMember]
+       
+        public string pac_nombres { get;  set; }
+        [DataMember]
+        public string Med_Nom { get;  set; }
+    }
+
+
+}
